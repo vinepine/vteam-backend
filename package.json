@@ -1,0 +1,26 @@
+{
+  "name": "vteam-backend",
+  "version": "1.0.0",
+  "description": "backend for schoolproject v-team",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vinepine/vteam-backend.git"
+  },
+  "author": "David, Didrik, Vincent and Zoë",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vinepine/vteam-backend/issues"
+  },
+  "homepage": "https://github.com/vinepine/vteam-backend#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.11"
+  }
+}
