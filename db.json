@@ -1,0 +1,100 @@
+
+{
+  "users": [
+    {
+      "id": 1,
+      "email": "anna@example.com",
+      "hashed_password": "hash123"
+    },
+    {
+      "id": 2,
+      "email": "erik@example.com",
+      "hashed_password": "hash456"
+    }
+  ],
+
+  "city": [
+    {
+      "id": 1,
+      "name": "Malmö",
+      "zone": "55.6050,13.0038"
+    },
+    {
+      "id": 2,
+      "name": "Stockholm",
+      "zone": "59.3293,18.0686"
+    }
+  ],
+
+  "stations": [
+    {
+      "id": 1,
+      "city_id": 1,
+      "namn": "Malmö någonstans",
+      "capacity": 12,
+      "coordinates": "59.290513,18.025397"
+    },
+    {
+      "id": 2,
+      "city_id": 2,
+      "namn": "Stockholm någonstans",
+      "capacity": 20,
+      "coordinates": "56.1612,15.5869"
+    }
+  ],
+
+    "scooters": [
+    {
+        "id": 1,
+        "city_id": 1,
+        "available": true,
+        "rented": false,
+        "battery": 88,
+        "coordinates": "55.6061,13.0008"
+    },
+    {
+        "id": 2,
+        "city_id": 2,
+        "available": false,
+        "rented": true,
+        "battery": 42,
+        "coordinates": "59.3301,18.0702"
+    }
+  ],
+
+  "rentals": [
+    {
+      "id": 1,
+      "user_id": 1,
+      "scooter_id": 1,
+      "start_time": "2025-02-01T10:15:00",
+      "end_time": "2025-02-01T10:35:00"
+    },
+    {
+      "id": 2,
+      "user_id": 2,
+      "scooter_id": 2,
+      "start_time": "2025-02-02T14:00:00",
+      "end_time": null
+    }
+  ],
+
+  "payments": [
+    {
+      "id": 1,
+      "rental_id": 1,
+      "user_id": 1,
+      "pay_method": "card",
+      "amount": 29.0,
+      "status": "completed"
+    },
+    {
+      "id": 2,
+      "rental_id": 2,
+      "user_id": 2,
+      "pay_method": "swish",
+      "amount": 0,
+      "status": "pending"
+    }
+  ]
+}
