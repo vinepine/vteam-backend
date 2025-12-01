@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon index.js",
-    "json-server": "npx json-server db.json"
+    "json-server": "npx json-server db.json -p 1337"
   },
   "repository": {
     "type": "git",
@@ -19,7 +19,8 @@
   },
   "homepage": "https://github.com/vinepine/vteam-backend#readme",
   "dependencies": {
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "mariadb": "^3.4.5"
   },
   "devDependencies": {
     "json-server": "^1.0.0-beta.3",

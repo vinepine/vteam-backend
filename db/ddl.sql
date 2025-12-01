@@ -15,7 +15,7 @@ CREATE TABLE stations (
     city_id INT NOT NULL,
     name VARCHAR(100),
     capacity INT,
-    FOREIGN KEY (city_id) REFERENCES cities(city_id)
+    FOREIGN KEY (city_id) REFERENCES city(city_id)
 );
 
 CREATE TABLE scooters (
@@ -24,7 +24,7 @@ CREATE TABLE scooters (
     available BOOLEAN DEFAULT TRUE,
     rented BOOLEAN DEFAULT FALSE,
     battery INT DEFAULT 100,
-    FOREIGN KEY (city_id) REFERENCES cities(city_id)
+    FOREIGN KEY (city_id) REFERENCES city(city_id)
 );
 
 CREATE TABLE rentals (
