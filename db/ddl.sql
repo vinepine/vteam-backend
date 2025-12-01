@@ -1,0 +1,49 @@
+CREATE TABLE users (
+    user_id INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    hashed_password VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE city (
+    city_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    zone TEXT
+);
+
+CREATE TABLE stations (
+    station_id INT AUTO_INCREMENT PRIMARY KEY,
+    city_id INT NOT NULL,
+    name VARCHAR(100),
+    capacity INT,
+    FOREIGN KEY (city_id) REFERENCES cities(city_id)
+);
+
+CREATE TABLE scooters (
+    scooter_id INT AUTO_INCREMENT PRIMARY KEY,
+    city_id INT NOT NULL,
+    available BOOLEAN DEFAULT TRUE,
+    rented BOOLEAN DEFAULT FALSE,
+    battery INT DEFAULT 100,
+    FOREIGN KEY (city_id) REFERENCES cities(city_id)
+);
+
+CREATE TABLE rentals (
+    rental_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    scooter_id INT NOT NULL,
+    start_time DATETIME NOT NULL,
+    end_time DATETIME,
+    FOREIGN KEY (user_id) REFERENCES users(user_id),
+    FOREIGN KEY (scooter_id) REFERENCES scooters(scooter_id)
+);
+
+CREATE TABLE payments (
+    payment_id INT AUTO_INCREMENT PRIMARY KEY,
+    rental_id INT NOT NULL,
+    user_id INT NOT NULL,
+    pay_method VARCHAR(50),
+    amount FLOAT NOT NULL,
+    status VARCHAR(50),
+    FOREIGN KEY (rental_id) REFERENCES rentals(rental_id),
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);

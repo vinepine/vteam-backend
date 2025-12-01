@@ -1,0 +1,18 @@
+networks:
+    dbwebb:
+
+services:
+    mariadb:
+        image: mariadb:10.6
+        environment:
+          MYSQL_ROOT_PASSWORD: skogaholmslimpa123
+          MYSQL_DATABASE: sparkcyklarab
+          MYSQL_USER: vteam01
+          MYSQL_PASSWORD: skogaholmslimpa
+        ports:
+          - "3306:3306"
+        networks:
+            dbwebb:
+        volumes:
+          - ./db:/db
+        restart: always
