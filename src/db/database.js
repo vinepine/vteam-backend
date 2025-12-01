@@ -1,19 +1,21 @@
 const mariadb = require('mariadb')
+require('dotenv').config()
 
 const pool = mariadb.createPool(
     {
-        host: "127.0.0.1",
+        host: process.env.DB_HOST,
         port: "3306",
-        user: "vteam01",
+        user: process.env.DB_USER,
         connectionLimit: 5,
-        password: "skogaholmslimpa"
-    });
+        password: process.env.DB_PASSWORD
+
+    }
+);
 
 async function openDb() {
     let conn;
     try {
-        conn = await pool.getConnection('sparkcyklarab');
-
+        conn = await pool.getConnection();
         return conn
     } catch (error) {
         console.log("error", error)

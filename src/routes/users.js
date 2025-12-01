@@ -11,12 +11,21 @@ async function getUsers(req, res) {
     }
 }
 
-async function testingTwo(req, res) {
+async function specificUser(req, res) {
+
+    const id = req.params.id
+
     try {
-        res.json({"test2": "testing2"})
+        const db = await openDb()
+        const user = await db.query("SELECT * FROM sparkcyklarab.users WHERE user_id = ?", [id])
+
+        res.status(200).json({user: user})
     } catch (error) {
         res.json(error)
     }
 }
 
-module.exports = {getUsers, testingTwo}
+module.exports = {
+    getUsers,
+    specificUser
+}

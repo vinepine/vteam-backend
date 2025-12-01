@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/vinepine/vteam-backend#readme",
   "dependencies": {
+    "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "mariadb": "^3.4.5"
   },

@@ -1,11 +1,14 @@
-const app = require('./src/app.js')
-const users = require('./src/routes/users.js')
+const express = require('express')
+const users = require('./src/routes/users.js');
+const app = express();
 
-const port = 3000
+const port = process.env.PORT || 3000;
 
-app.get('/v1/users', users.getUsers)
+app.get('/v1/users', users.getUsers);
+
+app.get('/v1/users/:id', users.specificUser);
 
 
 app.listen(port, () => {
-    console.log(`Listening on port ${port}`)
+    console.log(`Listening on port ${port}`);
 });
