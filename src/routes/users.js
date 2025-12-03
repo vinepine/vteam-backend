@@ -8,6 +8,8 @@ async function getUsers(req, res) {
         res.status(200).json({ users: users })
     } catch(error){
         res.json(error)
+    } finally {
+        if (db) db.release();
     }
 }
 
@@ -22,6 +24,8 @@ async function specificUser(req, res) {
         res.status(200).json({user: user})
     } catch (error) {
         res.json(error)
+    } finally {
+        if (db) db.release();
     }
 }
 
