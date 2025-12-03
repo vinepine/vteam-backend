@@ -9,12 +9,10 @@ const pool = mariadb.createPool(
         host: host,
         port: "3306",
         user: process.env.DB_USER,
-        connectionLimit: 5,
         password: process.env.DB_PASSWORD
 
     }
 );
-
 
 async function openDb() {
     let conn;
