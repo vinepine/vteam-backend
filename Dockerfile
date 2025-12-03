@@ -8,4 +8,8 @@ COPY package*.json .
 
 COPY db.json .
 
+COPY src/ ./src
+
+COPY .env .
+
 RUN npm install

@@ -3,7 +3,13 @@
 SET GLOBAL local_infile = 1;
 SHOW VARIABLES LIKE 'local_infile';
 
+DELETE FROM payments;
+DELETE FROM stations;
+DELETE FROM rentals;
+DELETE FROM scooters;
+DELETE FROM users;
 DELETE FROM city;
+
 LOAD DATA LOCAL INFILE 'csv/city.csv'
 INTO TABLE city
 CHARSET utf8
@@ -17,8 +23,6 @@ IGNORE 1 LINES
 
 
 
-
-DELETE FROM users;
 LOAD DATA LOCAL INFILE 'csv/users.csv'
 INTO TABLE users
 CHARSET utf8
@@ -32,7 +36,7 @@ IGNORE 1 LINES
 ;
 
 
-DELETE FROM scooters;
+
 LOAD DATA LOCAL INFILE 'csv/scooters.csv'
 INTO TABLE scooters
 CHARSET utf8
@@ -41,7 +45,7 @@ ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 IGNORE 1 LINES;
 
-DELETE FROM stations;
+
 LOAD DATA LOCAL INFILE 'csv/stations.csv'
 INTO TABLE stations
 CHARSET utf8
@@ -50,7 +54,7 @@ ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 IGNORE 1 LINES;
 
-DELETE FROM rentals;
+
 LOAD DATA LOCAL INFILE 'csv/rentals.csv'
 INTO TABLE rentals
 CHARSET utf8
@@ -64,7 +68,7 @@ IGNORE 1 LINES
 ;
 
 
-DELETE FROM payments;
+
 LOAD DATA LOCAL INFILE 'csv/payments.csv'
 INTO TABLE payments
 CHARSET utf8
