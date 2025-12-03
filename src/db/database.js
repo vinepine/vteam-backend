@@ -12,6 +12,7 @@ const pool = mariadb.createPool(
     }
 );
 
+
 async function openDb() {
     let conn;
     try {
