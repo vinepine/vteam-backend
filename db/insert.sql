@@ -4,7 +4,7 @@ SET GLOBAL local_infile = 1;
 SHOW VARIABLES LIKE 'local_infile';
 
 DELETE FROM city;
-LOAD DATA LOCAL INFILE './db/csv/city.csv'
+LOAD DATA LOCAL INFILE 'csv/city.csv'
 INTO TABLE city
 CHARSET utf8
 FIELDS
@@ -19,7 +19,7 @@ IGNORE 1 LINES
 
 
 DELETE FROM users;
-LOAD DATA LOCAL INFILE './db/csv/users.csv'
+LOAD DATA LOCAL INFILE 'csv/users.csv'
 INTO TABLE users
 CHARSET utf8
 FIELDS
@@ -33,7 +33,7 @@ IGNORE 1 LINES
 
 
 DELETE FROM scooters;
-LOAD DATA LOCAL INFILE './db/csv/scooters.csv'
+LOAD DATA LOCAL INFILE 'csv/scooters.csv'
 INTO TABLE scooters
 CHARSET utf8
 FIELDS TERMINATED BY ',' 
@@ -42,7 +42,7 @@ LINES TERMINATED BY '\n'
 IGNORE 1 LINES;
 
 DELETE FROM stations;
-LOAD DATA LOCAL INFILE './db/csv/stations.csv'
+LOAD DATA LOCAL INFILE 'csv/stations.csv'
 INTO TABLE stations
 CHARSET utf8
 FIELDS TERMINATED BY ',' 
@@ -51,7 +51,7 @@ LINES TERMINATED BY '\n'
 IGNORE 1 LINES;
 
 DELETE FROM rentals;
-LOAD DATA LOCAL INFILE './db/csv/rentals.csv'
+LOAD DATA LOCAL INFILE 'csv/rentals.csv'
 INTO TABLE rentals
 CHARSET utf8
 FIELDS
@@ -65,7 +65,7 @@ IGNORE 1 LINES
 
 
 DELETE FROM payments;
-LOAD DATA LOCAL INFILE './db/csv/payments.csv'
+LOAD DATA LOCAL INFILE 'csv/payments.csv'
 INTO TABLE payments
 CHARSET utf8
 FIELDS

@@ -2,14 +2,13 @@ services:
     mariadb:
         image: mariadb:10.6
         environment:
-          MYSQL_ROOT_PASSWORD: skogaholmslimpa123
-          MYSQL_DATABASE: sparkcyklarab
+          MYSQL_ROOT_PASSWORD: 123
+          MYSQL_DATABASE: vteam
           MYSQL_USER: vteam01
-          MYSQL_PASSWORD: skogaholmslimpa
+          MYSQL_PASSWORD: vteam
         ports:
           - "3306:3306"
         volumes:
-          - mysql-data:/var/lib/mysql
+          - ./db:/docker-entrypoint-initdb.d
+          - ./csv:/csv
         restart: always
-volumes:
-  mysql-data:
