@@ -1,16 +1,16 @@
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(100) NOT NULL UNIQUE,
     hashed_password VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE city (
+CREATE TABLE IF NOT EXISTS city (
     city_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     zone TEXT
 );
 
-CREATE TABLE stations (
+CREATE TABLE IF NOT EXISTS stations (
     station_id INT AUTO_INCREMENT PRIMARY KEY,
     city_id INT NOT NULL,
     name VARCHAR(100),
@@ -18,7 +18,7 @@ CREATE TABLE stations (
     FOREIGN KEY (city_id) REFERENCES city(city_id)
 );
 
-CREATE TABLE scooters (
+CREATE TABLE IF NOT EXISTS scooters (
     scooter_id INT AUTO_INCREMENT PRIMARY KEY,
     city_id INT NOT NULL,
     available BOOLEAN DEFAULT TRUE,
@@ -27,7 +27,7 @@ CREATE TABLE scooters (
     FOREIGN KEY (city_id) REFERENCES city(city_id)
 );
 
-CREATE TABLE rentals (
+CREATE TABLE IF NOT EXISTS rentals (
     rental_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     scooter_id INT NOT NULL,
@@ -37,7 +37,7 @@ CREATE TABLE rentals (
     FOREIGN KEY (scooter_id) REFERENCES scooters(scooter_id)
 );
 
-CREATE TABLE payments (
+CREATE TABLE IF NOT EXISTS payments (
     payment_id INT AUTO_INCREMENT PRIMARY KEY,
     rental_id INT NOT NULL,
     user_id INT NOT NULL,
