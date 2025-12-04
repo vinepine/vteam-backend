@@ -1,8 +1,7 @@
 const mariadb = require('mariadb')
 require('dotenv').config()
 
-const host = process.env.DOCKER_HOSTING ? "mariadb" : "127.0.0.1";
-console.log(host)
+const host = process.env.DOCKER_HOSTING ? "mariadb" : "localhost";
 
 const pool = mariadb.createPool(
     {
@@ -10,7 +9,6 @@ const pool = mariadb.createPool(
         port: "3306",
         user: process.env.DB_USER,
         password: process.env.DB_PASSWORD
-
     }
 );
 
