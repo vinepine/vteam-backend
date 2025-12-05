@@ -1,35 +1,10 @@
-const openDb = require("../db/database.js")
+const express = require('express');
+const users = require('../controller/users.js');
 
-async function getUsers(req, res) {
-    try {
-        const db = await openDb();
-        const users = await db.query('SELECT * FROM vteam.users;')
-        console.log(users)
-        res.status(200).json({ users: users })
-    } catch(error){
-        res.json(error)
-    } finally {
-        if (db) db.release();
-    }
-}
+const router = express.Router();
 
-async function specificUser(req, res) {
+router.get('/v1/users', users.getUsers);
 
-    const id = req.params.id
+router.get('/v1/users/:id', users.specificUser);
 
-    try {
-        const db = await openDb()
-        const user = await db.query("SELECT * FROM vteam.users WHERE user_id = ?", [id])
-
-        res.status(200).json({user: user})
-    } catch (error) {
-        res.json(error)
-    } finally {
-        if (db) db.release();
-    }
-}
-
-module.exports = {
-    getUsers,
-    specificUser
-}
+module.exports = router;
