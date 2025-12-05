@@ -2,6 +2,7 @@ const express = require('express')
 const users = require('./src/routes/users.js');
 const scooters = require('./src/routes/scooters.js');
 const stations = require('./src/routes/stations.js');
+const rentals = require('./src/routes/rentals.js');
 const app = express();
 
 const port = process.env.PORT || 3001;
@@ -21,6 +22,14 @@ app.get('/v1/bike/:id/:available', scooters.updateAvailable);
 app.get('/v1/stations', stations.getStations);
 
 app.get('/v1/stations/:id', stations.getOneStation);
+
+app.get('/v1/rental', rentals.getRental);
+
+app.get('/v1/rental/:id', rentals.getOneRental);
+
+app.get('/v1/rental/start/:id/:userId/:scooterId', rentals.startRental);
+
+app.get('/v1/rental/end/:id/:userId/:scooterId', rentals.endRental);
 
 app.listen(port, () => {
     console.log(`Listening on port ${port}`);
