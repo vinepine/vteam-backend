@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const openDb = require('../db/database.js')
 const bcrypt = require('bcryptjs');
-
+const secret = process.env.JWT_SECRET
 
 const salt = 10;
 
@@ -27,16 +27,16 @@ async function login(req, res) {
     let db;
     const email = req.body.email;
     const password = req.body.password
+
     try {
         db = await openDb();
         const user = await db.query(`SELECT * FROM vteam.users WHERE email = ?`, [email]);
-        const jsonUser = user[0]
 
-        bcrypt.compare(password, jsonUser.hashed_password, (err, res) => {
+        bcrypt.compare(password, user[0].hashed_password, async (err, res) => {
             console.log(res);
         });
 
-        res.status(200).json({user: jsonUser})
+        res.status(200).json({user: user[0]})
     } catch (error) {
         res.json(error)
     } finally {
