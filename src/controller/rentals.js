@@ -69,7 +69,7 @@ async function endRental(req, res) {
     } finally {
         if (db) db.release();
     }
-}
+};
 
 
 module.exports = {

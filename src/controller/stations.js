@@ -28,7 +28,6 @@ async function getOneStation(req, res) {
     }
 }
 
-
 module.exports = {
     getStations,
     getOneStation
