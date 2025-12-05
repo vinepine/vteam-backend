@@ -1,21 +1,21 @@
 const express = require('express')
-const users = require('./src/routes/users.js');
-const scooters = require('./src/routes/scooters.js');
+
+const scooterRoutes = require('./src/routes/scooters.js');
+const stationRoutes = require('./src/routes/stations.js');
+const userRoutes = require('./src/routes/users.js');
+const rentalRoutes = require('./src/routes/rentals.js');
+const paymentRoutes = require('./src/routes/payments.js');
+
 const app = express();
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 
-app.get('/v1/users', users.getUsers);
+app.use(scooterRoutes);
+app.use(stationRoutes);
+app.use(userRoutes);
+app.use(rentalRoutes);
+app.use(paymentRoutes);
 
-app.get('/v1/users/:id', users.specificUser);
-
-app.get('/v1/bike', scooters.getScooters);
-
-app.get('/v1/bike/:id', scooters.getOneScooter);
-
-app.get('/v1/bike/available', scooters.getAvailable);
-
-app.get('/v1/bike/:id/:available', scooters.updateAvailable);
 
 
 app.listen(port, () => {
