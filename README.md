@@ -5,7 +5,7 @@ Git repo för Vteam backend
 
 1. **Klona repot**
    ```bash
-   git clone git@github.com:användarnamn/vteam-backend.git
+   git clone git@github.com:vinepine/vteam-backend.git
    cd vteam-backend
 
 2. **Installera dependencies**
