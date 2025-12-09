@@ -3,9 +3,14 @@ import {defineConfig} from 'eslint/config';
 
 export default defineConfig([
 	config,
- {
+ 	{
 		languageOptions: {
 			sourceType: 'commonjs',
 		},
+		rules: {
+			"new-cap": "off",
+			"curly": "off"
+		},
 	},
+	
 ]);
