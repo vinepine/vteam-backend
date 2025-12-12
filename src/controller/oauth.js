@@ -1,5 +1,6 @@
 const {AuthorizationCode} = require('simple-oauth2');
 const jwt = require('jsonwebtoken');
+
 const openDb = require('../db/database.js');
 const secret = process.env.JWT_SECRET;
 
