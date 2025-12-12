@@ -55,15 +55,15 @@ async function callback(req, res) {
 		if (accessToken) {
 			const token = jwt.sign(user[0], secret, {expiresIn: '1h'});
 
-			return res.json({token});
+			return res.json({ token });
 		}
 
 		res.send('something went wrong');
 	} catch (error) {
 		res.status(500).send(error);
 	} finally {
-		db.release();
-	}
+        if(db) db.release();
+    }
 }
 
 module.exports = {
