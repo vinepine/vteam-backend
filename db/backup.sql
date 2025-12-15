@@ -1,7 +1,7 @@
 /*M!999999\- enable the sandbox mode */ 
 -- MariaDB dump 10.19  Distrib 10.6.22-MariaDB, for debian-linux-gnu (x86_64)
 --
--- Host: 127.0.0.1    Database: sparkcyklarab
+-- Host: 127.0.0.1    Database: vteam
 -- ------------------------------------------------------
 -- Server version	10.6.24-MariaDB-ubu2204
 
@@ -129,7 +129,7 @@ CREATE TABLE `scooters` (
 
 LOCK TABLES `scooters` WRITE;
 /*!40000 ALTER TABLE `scooters` DISABLE KEYS */;
-INSERT INTO `scooters` VALUES (1,1,0,0,88),(2,2,0,0,42);
+INSERT INTO `scooters` VALUES (1,1,1,0,88),(2,2,0,1,43);
 /*!40000 ALTER TABLE `scooters` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -196,4 +196,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-12-01 13:04:08
+-- Dump completed on 2025-12-06 18:34:54
