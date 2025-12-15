@@ -5,6 +5,8 @@ const stationRoutes = require('./src/routes/stations.js');
 const userRoutes = require('./src/routes/users.js');
 const rentalRoutes = require('./src/routes/rentals.js');
 const authRoutes = require('./src/routes/auth.js');
+const paymentRoutes = require('./src/routes/payments.js');
+const cityRoutes = require('./src/routes/city.js');
 
 const app = express();
 
@@ -17,6 +19,8 @@ app.use(scooterRoutes);
 app.use(stationRoutes);
 app.use(userRoutes);
 app.use(rentalRoutes);
+app.use(paymentRoutes);
+app.use(cityRoutes);
 app.use(authRoutes);
 
 app.listen(port, () => {
