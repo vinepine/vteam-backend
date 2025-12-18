@@ -18,9 +18,7 @@ async function register(req, res) {
 	} catch (error) {
 		res.json(error);
 	} finally {
-		if (db) {
-			db.release();
-		}
+		if (db) db.release();
 	}
 }
 
