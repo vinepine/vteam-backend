@@ -10,5 +10,5 @@ router.get('/v1/payment/user/:id', payment.getUserPayment);
 router.get('/v1/payment/amount/:amount', payment.getAmountPayment);
 router.get('/v1/payment/new/:rentalId/:userId/:paymentMethod/:amount', payment.createPayment);
 
-module.exports = router
+module.exports = router;
 

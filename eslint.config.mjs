@@ -9,7 +9,9 @@ export default defineConfig([
 		},
 		rules: {
 			"new-cap": "off",
-			"curly": "off"
+			"curly": "off",
+			"camelcase": "off",
+			"json/no-empty-keys": "off",
 		},
 	},
 	

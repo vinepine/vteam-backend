@@ -23,6 +23,10 @@ app.use(paymentRoutes);
 app.use(cityRoutes);
 app.use(authRoutes);
 
-app.listen(port, () => {
-	console.log(`Listening on port ${port}`);
-});
+if (process.env.NODE_ENV !== "test") {
+  app.listen(port, () => {
+    console.log(`Server running on port ${port}`);
+  });
+}
+
+module.exports = app;
