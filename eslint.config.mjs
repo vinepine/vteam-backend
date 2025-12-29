@@ -12,6 +12,7 @@ export default defineConfig([
 			"curly": "off",
 			"camelcase": "off",
 			"json/no-empty-keys": "off",
+			"no-undef": "off",
 		},
 	},
 	
