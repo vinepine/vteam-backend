@@ -29,7 +29,27 @@ async function specificUser(req, res) {
 	}
 }
 
+async function deleteUser(req, res) {
+	const id = parseInt(req.params.id);
+	const {user_id} = req.user
+	let db;
+
+	if ( user_id != id) return res.json('No permission')
+
+	try {
+		db = await openDb();
+		await db.query('DELETE FROM vteam.users WHERE user_id = ?', [id]);
+
+		res.status(202).json('User deleted')
+	} catch (error) {
+		res.status(500).json(error)
+	} finally {
+		if (db) db.release();
+	}
+}
+
 module.exports = {
 	getUsers,
 	specificUser,
+	deleteUser,
 };

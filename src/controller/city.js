@@ -2,6 +2,8 @@ const openDb = require('../db/database.js');
 
 async function getCitys(req, res) {
 	const db = await openDb();
+	const {user_id} = req.user
+	console.log(user_id)
 	try {
 		const cities = await db.query('SELECT * FROM vteam.city');
 		res.status(200).json({cities});
