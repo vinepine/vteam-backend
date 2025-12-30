@@ -1,5 +1,3 @@
-
-
 SET GLOBAL local_infile = 1;
 SHOW VARIABLES LIKE 'local_infile';
 
@@ -9,6 +7,7 @@ DELETE FROM rentals;
 DELETE FROM scooters;
 DELETE FROM users;
 DELETE FROM city;
+DELETE FROM price;
 
 LOAD DATA LOCAL INFILE 'csv/city.csv'
 INTO TABLE city
@@ -78,5 +77,16 @@ FIELDS
 LINES
     TERMINATED BY '\n'
 
+IGNORE 1 LINES
+;
+
+LOAD DATA LOCAL INFILE 'csv/price.csv'
+INTO TABLE price
+CHARSET utf8
+FIELDS
+    TERMINATED BY ','
+    ENCLOSED BY '"'
+LINES
+    TERMINATED BY '\n'
 IGNORE 1 LINES
 ;

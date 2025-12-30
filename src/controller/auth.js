@@ -26,7 +26,6 @@ async function login(req, res) {
 	let db;
 	const {email} = req.body;
 	const {password} = req.body;
-	console.log(email);
 
 	try {
 		db = await openDb();

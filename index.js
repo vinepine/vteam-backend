@@ -7,6 +7,7 @@ const rentalRoutes = require('./src/routes/rentals.js');
 const authRoutes = require('./src/routes/auth.js');
 const paymentRoutes = require('./src/routes/payments.js');
 const cityRoutes = require('./src/routes/city.js');
+const priceRoutes = require('./src/routes/price.js');
 
 const app = express();
 
@@ -22,7 +23,12 @@ app.use(rentalRoutes);
 app.use(paymentRoutes);
 app.use(cityRoutes);
 app.use(authRoutes);
+app.use(priceRoutes);
 
-app.listen(port, () => {
-	console.log(`Listening on port ${port}`);
-});
+if (process.env.NODE_ENV !== 'test') {
+	app.listen(port, () => {
+		console.log(`Server running on port ${port}`);
+	});
+}
+
+module.exports = app;

@@ -47,3 +47,8 @@ CREATE TABLE IF NOT EXISTS payments (
     FOREIGN KEY (rental_id) REFERENCES rentals(rental_id),
     FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
+
+CREATE TABLE IF NOT EXISTS price (
+    id INT PRIMARY KEY,
+    ppm FLOAT NOT NULL
+)
