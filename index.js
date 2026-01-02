@@ -9,10 +9,14 @@ const paymentRoutes = require('./src/routes/payments.js');
 const cityRoutes = require('./src/routes/city.js');
 const priceRoutes = require('./src/routes/price.js');
 
+
+const cors = require('./src/middleware/cors.js');
 const app = express();
 
 const port = process.env.PORT || 3001;
 
+
+app.use(cors());
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 
