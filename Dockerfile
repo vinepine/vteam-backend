@@ -12,4 +12,6 @@ COPY src/ ./src
 
 COPY .env .
 
+npm install socket.io
+
 RUN npm install

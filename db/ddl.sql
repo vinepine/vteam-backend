@@ -23,11 +23,11 @@ CREATE TABLE IF NOT EXISTS city (
 );
 
 CREATE TABLE IF NOT EXISTS stations (
-    station_id INT AUTO_INCREMENT PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     city_id INT NOT NULL,
     name VARCHAR(100),
     capacity INT,
-    coordinates VARCHAR(100),
+    coordinates TEXT NOT NULL,
     FOREIGN KEY (city_id) REFERENCES city(city_id)
 );
 
@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS scooters (
     available BOOLEAN DEFAULT TRUE,
     rented BOOLEAN DEFAULT FALSE,
     battery INT DEFAULT 100,
-    coordinates VARCHAR(100),
+    coordinates TEXT NOT NULL,
     FOREIGN KEY (city_id) REFERENCES city(city_id)
 );
 
