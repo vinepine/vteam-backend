@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const http = require("http");
-const initSocket = require("./socket/socket");
+const { initSocket } = require("./socket/socket");
 
 const scooterRoutes = require('./src/routes/scooters.js');
 const stationRoutes = require('./src/routes/stations.js');
@@ -13,7 +13,6 @@ const cityRoutes = require('./src/routes/city.js');
 const priceRoutes = require('./src/routes/price.js');
 
 
-const cors = require('./src/middleware/cors.js');
 const app = express();
 app.use(cors({ origin: "http://localhost:3000" }));
 
