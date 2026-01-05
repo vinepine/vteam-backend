@@ -1,13 +1,13 @@
-const scooters = require('../controller/scooters.js');
-
 const express = require('express');
-
 const router = express.Router();
 
-router.get('/v1/bike', scooters.getScooters);
-router.get('/v1/bike/:id', scooters.getOneScooter);
-router.get('/v1/available/bike', scooters.getAvailable);
-router.get('/v1/bike/:id/:available', scooters.updateAvailable);
+const scooters = require('../controller/scooters.js');
+const {jwtMiddleware} = require('../middleware/jwt-middleware.js');
 
-module.exports = router
 
+router.get('/v1/bike', jwtMiddleware, scooters.getScooters);
+router.get('/v1/bike/:id', jwtMiddleware, scooters.getOneScooter);
+router.get('/v1/available/bike', jwtMiddleware, scooters.getAvailable);
+router.get('/v1/bike/:id/:available', jwtMiddleware, scooters.updateAvailable);
+
+module.exports = router;

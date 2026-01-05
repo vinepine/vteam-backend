@@ -1,35 +1,55 @@
-const openDb = require("../db/database.js")
+const openDb = require('../db/database.js');
 
 async function getUsers(req, res) {
-    try {
-        const db = await openDb();
-        const users = await db.query('SELECT * FROM vteam.users;')
-        console.log(users)
-        res.status(200).json({ users: users })
-    } catch(error){
-        res.json(error)
-    } finally {
-        if (db) db.release();
-    }
+	let db;
+	try {
+		db = await openDb();
+		const users = await db.query('SELECT * FROM vteam.users;');
+
+		res.status(200).json({users});
+	} catch (error) {
+		res.json(error);
+	} finally {
+		if (db) db.release();
+	}
 }
 
 async function specificUser(req, res) {
+	const {id} = req.params;
+	let db;
+	try {
+		db = await openDb();
+		const user = await db.query('SELECT * FROM vteam.users WHERE user_id = ?', [id]);
 
-    const id = req.params.id
+		res.status(200).json({user});
+	} catch (error) {
+		res.json(error);
+	} finally {
+		if (db) db.release();
+	}
+}
 
-    try {
-        const db = await openDb()
-        const user = await db.query("SELECT * FROM vteam.users WHERE user_id = ?", [id])
+async function deleteUser(req, res) {
+	const id = parseInt(req.params.id);
+	const {user_id} = req.user
+	let db;
 
-        res.status(200).json({user: user})
-    } catch (error) {
-        res.json(error)
-    } finally {
-        if (db) db.release();
-    }
+	if ( user_id != id) return res.json('No permission')
+
+	try {
+		db = await openDb();
+		await db.query('DELETE FROM vteam.users WHERE user_id = ?', [id]);
+
+		res.status(202).json('User deleted')
+	} catch (error) {
+		res.status(500).json(error)
+	} finally {
+		if (db) db.release();
+	}
 }
 
 module.exports = {
-    getUsers,
-    specificUser
-}
+	getUsers,
+	specificUser,
+	deleteUser,
+};

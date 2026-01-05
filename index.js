@@ -3,13 +3,17 @@ const cors = require("cors");
 const http = require("http");
 const initSocket = require("./socket/socket");
 
-const scooterRoutes = require("./src/routes/scooters.js");
-const stationRoutes = require("./src/routes/stations.js");
-const userRoutes = require("./src/routes/users.js");
-const rentalRoutes = require("./src/routes/rentals.js");
-const paymentRoutes = require("./src/routes/payments.js");
-const cityRoutes = require("./src/routes/city.js");
+const scooterRoutes = require('./src/routes/scooters.js');
+const stationRoutes = require('./src/routes/stations.js');
+const userRoutes = require('./src/routes/users.js');
+const rentalRoutes = require('./src/routes/rentals.js');
+const authRoutes = require('./src/routes/auth.js');
+const paymentRoutes = require('./src/routes/payments.js');
+const cityRoutes = require('./src/routes/city.js');
+const priceRoutes = require('./src/routes/price.js');
 
+
+const cors = require('./src/middleware/cors.js');
 const app = express();
 app.use(cors({ origin: "http://localhost:3000" }));
 
@@ -19,13 +23,24 @@ initSocket(server);
 
 const port = process.env.PORT || 3001;
 
+
+app.use(cors());
+app.use(express.urlencoded({extended: true}));
+app.use(express.json());
+
 app.use(scooterRoutes);
 app.use(stationRoutes);
 app.use(userRoutes);
 app.use(rentalRoutes);
 app.use(paymentRoutes);
 app.use(cityRoutes);
+app.use(authRoutes);
+app.use(priceRoutes);
 
-server.listen(port, () => {
-  console.log(`Listening on port: ${port}`);
-});
+if (process.env.NODE_ENV !== 'test') {
+	app.listen(port, () => {
+		console.log(`Server running on port ${port}`);
+	});
+}
+
+module.exports = app;
