@@ -1,59 +1,27 @@
-/* global L */
+const { Server } = require("socket.io");
 
-import { io } from "https://cdn.socket.io/4.8.1/socket.io.esm.min.js";
+let io;
 
-export default class ScooterMap extends HTMLElement {
-    constructor() {
-        super();
-        this.markers = new Map();
-        this.map = null;
-    }
+function initSocket(server) {
+  io = new Server(server, {
+    cors: {
+      origin: "http://localhost:3000",
+      methods: ["GET", "POST"],
+    },
+    transports: ["websocket", "polling"],
+  });
 
-    async connectedCallback() {
-        this.innerHTML = `<div id="map" class="map"></div>`;
-        this.renderMap();
-        this.loadScooters();
-        this.initSocket();
-    }
+  setInterval(() => {
+    io.emit("scooter-update", {
+      id: 1,
+      lat: 55.6095 + Math.random() * 0.002,
+      lng: 13.0005 + Math.random() * 0.002,
+    });
+  }, 2000);
 
-    renderMap() {
-        this.map = L.map("map").setView([55.6050, 13.0038], 13);
-        L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-            maxZoom: 19
-        }).addTo(this.map);
-    }
-
-    async loadScooters() {
-        const response = await fetch("/v1/bike");
-        const data = await response.json();
-
-        data.scooters.forEach(scooters => {
-
-            const [lat, lng] = scooters.coordinates.split(",");
-
-            const marker = L.marker([lat, lng]).addTo(this.map);
-
-            this.markers.set(scooters.scooter_id, marker);
-        });
-    }
-
-    initSocket() {
-        const socket = io("http://localhost:3000");
-        const scooterIcon = L.icon({
-            iconUrl: "/img/scooter_pin.png",
-            iconSize: [40, 40],
-            iconAnchor: [20, 40],
-            popupAnchor: [0, -40]
-        });
-        socket.on("scooter-update", (data) => {
-            const { id, lat, lng } = data;
-
-            if (this.markers.has(id)) {
-                this.markers.get(id).setLatLng([lat, lng]);
-            } else {
-                const marker = L.marker([lat, lng], { icon: scooterIcon }).addTo(this.map);
-                this.markers.set(id, marker);
-            }
-        });
-    }
+  return io;
 }
+
+module.exports = {
+  initSocket,
+};
