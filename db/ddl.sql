@@ -1,3 +1,15 @@
+SET FOREIGN_KEY_CHECKS = 0;
+
+DROP TABLE IF EXISTS payments;
+DROP TABLE IF EXISTS rentals;
+DROP TABLE IF EXISTS scooters;
+DROP TABLE IF EXISTS stations;
+DROP TABLE IF EXISTS price;
+DROP TABLE IF EXISTS city;
+DROP TABLE IF EXISTS users;
+
+SET FOREIGN_KEY_CHECKS = 1;
+
 CREATE TABLE IF NOT EXISTS users (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(100) NOT NULL UNIQUE,
@@ -15,6 +27,7 @@ CREATE TABLE IF NOT EXISTS stations (
     city_id INT NOT NULL,
     name VARCHAR(100),
     capacity INT,
+    coordinates VARCHAR(100),
     FOREIGN KEY (city_id) REFERENCES city(city_id)
 );
 
@@ -24,6 +37,7 @@ CREATE TABLE IF NOT EXISTS scooters (
     available BOOLEAN DEFAULT TRUE,
     rented BOOLEAN DEFAULT FALSE,
     battery INT DEFAULT 100,
+    coordinates VARCHAR(100),
     FOREIGN KEY (city_id) REFERENCES city(city_id)
 );
 
