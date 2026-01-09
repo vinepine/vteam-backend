@@ -11,6 +11,7 @@ const authRoutes = require('./src/routes/auth.js');
 const paymentRoutes = require('./src/routes/payments.js');
 const cityRoutes = require('./src/routes/city.js');
 const priceRoutes = require('./src/routes/price.js');
+const simRoutes = require('./src/routes/sim.js');
 
 
 const app = express();
@@ -35,6 +36,7 @@ app.use(paymentRoutes);
 app.use(cityRoutes);
 app.use(authRoutes);
 app.use(priceRoutes);
+app.use(simRoutes);
 
 if (process.env.NODE_ENV !== 'test') {
 	app.listen(port, () => {

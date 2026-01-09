@@ -48,8 +48,25 @@ async function deleteUser(req, res) {
 	}
 }
 
+async function loadBalance(req, res) {
+	const amount = req.params.amount
+	const {user_id} = req.user;
+	let db;
+
+	try {
+		db = await openDb();
+		await db.query('UPDATE vteam.users SET balance = balance + ? WHERE user_id = ?', [amount, user_id]);
+		res.json('balance updated')
+	} catch (error) {
+		res.status(500).json(error)
+	} finally {
+		if (db) db.release();
+	}
+}
+
 module.exports = {
 	getUsers,
 	specificUser,
 	deleteUser,
+	loadBalance
 };
