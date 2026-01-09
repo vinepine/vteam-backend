@@ -34,9 +34,10 @@ async function stopInterval(req, res) {
 
 async function startInterval(req, res) {
     if (simInterval != null) return
+
     await resetSimulation();
 
-    await insertScooters();
+    await insertScooters(req.params.amount);
 
     simInterval = setInterval(updateInterval, 3000);
 

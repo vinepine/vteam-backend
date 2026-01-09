@@ -1,14 +1,15 @@
 const openDb = require('../../../db/database.js');
 
-async function insertScooters() {
+async function insertScooters(amount) {
     let db;
 
     try {
         db = await openDb();
-        
+  
         // "1","Malmö","55.6050","13.0038"
         // "2","Stockholm","59.3293","18.0686"
         // "3","Göteborg","57.706","11.954"
+
         const cityCoords = {
             1: [55.6050, 13.0038],
             2: [59.3293, 18.0686],
@@ -16,7 +17,7 @@ async function insertScooters() {
         }
 
         const values = [];
-        for (let i = 0; i < 1000; i++) {
+        for (let i = 0; i < amount; i++) {
             const cityId = (i % 3) + 1
             // console.log(cityCoords[cityId][0])
             lat = cityCoords[cityId][0] + (Math.random() - 0.5) / 10
