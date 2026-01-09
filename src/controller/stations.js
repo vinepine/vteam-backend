@@ -18,7 +18,7 @@ async function getOneStation(req, res) {
 	const db = await openDb();
 	const {id} = req.params;
 	try {
-		const station = await db.query('SELECT * FROM vteam.stations WHERE station_id = ?', [id]);
+		const station = await db.query('SELECT * FROM vteam.stations WHERE id = ?', [id]);
 
 		res.status(200).json({station});
 	} catch (error) {
