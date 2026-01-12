@@ -71,6 +71,12 @@ async function startRental(req, res) {
 			});
 		}
 
+		// Markera cykeln som upptagen
+		await db.query(
+			'UPDATE vteam.scooters SET available = FALSE, rented = TRUE WHERE scooter_id = ?',
+			[scooterId]
+		);
+
 		const result = await db.query(
 			'INSERT INTO vteam.rentals (start_time, user_id, scooter_id) VALUES (?, ?, ?)',
 			[start, userId, scooterId],
@@ -123,6 +129,12 @@ async function endRental(req, res) {
 		await db.query(
 			'UPDATE vteam.rentals SET end_time = ? WHERE rental_id = ?',
 			[end, id]
+		);
+		
+		// Markera cykeln som tillgänglig igen
+		await db.query(
+			'UPDATE vteam.scooters SET available = TRUE, rented = FALSE WHERE scooter_id = ?',
+			[scooterId]
 		);
 		
 		// Dra pengar från saldo
