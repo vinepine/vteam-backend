@@ -32,61 +32,55 @@ describe('Routes', () => {
 				})
 		})
 	})
-	describe('GET /v1/bike', () => {
-		it('should return bike array', done => {
-			request.execute(app).get('/v1/bike')
+	describe('GET /v1/users', () => {
+		it('should return users array', done => {
+			request.execute(app).get('/v1/users')
 				.set('x-access-token', jwtToken)
 				.end((err, res) => {
 					res.should.have.status(200);
-					res.body.scooters.should.be.an('array');
+					res.body.users.should.be.an('array');
 					
 					done();
 				});
 		});
 	});
-	describe('GET /v1/bike/:id', () => {
+	describe('GET /v1/users/:id', () => {
 		describe('when id exists', () => {
-			it('should return one bike array', done => {
-				request.execute(app).get('/v1/bike/1')
+			it('should return one users array', done => {
+				request.execute(app).get('/v1/users/2')
 					.set('x-access-token', jwtToken)
 					.end((err, res) => {
 					res.should.have.status(200);
-					res.body.scooter.should.be.an('array');
-					res.body.scooter.length.should.equal(1);
-					res.body.scooter[0].scooter_id.should.equal(1);
+					res.body.user.should.be.an('array');
+					res.body.user.length.should.equal(1);
+					res.body.user[0].user_id.should.equal(2);
 
 						done();
 				});
 			});
 		});
 		describe('when id does not exist', () => {
-			it('should return empty scooter array', done => {
+			it('should return empty users array', done => {
 			request.execute(app)
-				.get('/v1/bike/999999')
+				.get('/v1/users/999999')
 				.set('x-access-token', jwtToken)
 				.end((err, res) => {
 
 				res.should.have.status(200);
-				res.body.scooter.should.be.an('array');
-				res.body.scooter.length.should.equal(0);
+				res.body.user.should.be.an('array');
+				res.body.user.length.should.equal(0);
 
 				done();
 				});
 			});
 		});
 	});
-	describe('GET /v1/available/bike', () => {
-		it('should return one bike array', done => {
-			request.execute(app).get('/v1/available/bike')
-				.set('x-access-token', jwtToken)
-				.end((err, res) => {
-				res.should.have.status(200);
-				res.body.available.should.be.an('array');
-				res.body.available.forEach(bike => {
-					bike.available.should.equal(1);
-				});
-
-					done();
+	describe('GET /v1/users', () => {
+		it('should fail without token', done => {
+			request.execute(app).get('/v1/users')
+			.end((err, res) => {
+				res.status.should.equal(401);
+				done();
 			});
 		});
 	});
