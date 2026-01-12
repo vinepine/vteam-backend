@@ -74,5 +74,14 @@ describe('Routes', () => {
 				});
 			});
 		});
+		describe('when token does not exist', () => {
+			it('should fail without token', done => {
+				request.execute(app).get('/v1/stations/4')
+				.end((err, res) => {
+					res.status.should.equal(401);
+					done();
+				});
+			});
+		});
 	});
 });
