@@ -33,27 +33,37 @@ async function stopInterval(req, res) {
 }
 
 async function startInterval(req, res) {
-    if (simInterval != null) return
+    if (simInterval != null) return res.json('simulation already running');
 
-    await resetSimulation();
+    await resetSimulationInternal();
 
     await insertScooters(req.params.amount);
 
     simInterval = setInterval(updateInterval, 3000);
 
-    res.json('sim started')
+    res.json('sim started');
 }
 
-async function resetSimulation(){
+async function resetSimulationInternal() {
     let db;
     try {
         db = await openDb();
         await db.query('DELETE FROM vteam.scooters WHERE scooter_id > 50;');
         await db.query('ALTER TABLE vteam.scooters AUTO_INCREMENT = 51;');
     } catch (error) {
-        console.log(error)
+        console.log(error);
+        throw error;
     } finally {
         if (db) db.release();
+    }
+}
+
+async function resetSimulation(req, res) {
+    try {
+        await resetSimulationInternal();
+        res.json('sim reset');
+    } catch (error) {
+        res.status(500).json('error');
     }
 }
 
