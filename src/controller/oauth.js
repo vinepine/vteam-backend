@@ -54,9 +54,9 @@ async function callback(req, res) {
 		}
 
 		if (accessToken) {
-			const token = jwt.sign(user[0], secret, {expiresIn: '1h'});
+			const token = jwt.sign({ user_id: user[0].user_id, email: user[0].email }, secret, {expiresIn: '1h'});
 
-			return res.json({token});
+			return res.redirect(`http://localhost:3000/callback?token=${token}`);
 		}
 
 		res.send('something went wrong');
