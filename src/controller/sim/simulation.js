@@ -1,5 +1,6 @@
 const openDb = require("../../db/database.js");
 const insertScooters = require('./inserts/scooter.js');
+const insertUsers = require('./inserts/users.js');
 
 let simInterval = null;
 
@@ -10,8 +11,9 @@ async function updateInterval() {
         await db.query(`
             UPDATE vteam.scooters
             SET
-                lat = FORMAT(lat + lat*(RAND() - 0.5)*0.001, 4),
-                lon = FORMAT(lon + lon*(RAND() - 0.5)*0.001, 4);`
+                lat = FORMAT(lat + lat*(RAND() - 0.5)*0.00001, 4),
+                lon = FORMAT(lon + lon*(RAND() - 0.5)*0.00001, 4)
+            WHERE scooter_id > 50;`
         );
         console.log("updated..")
     } catch (error) {
@@ -22,7 +24,7 @@ async function updateInterval() {
 }
 
 async function stopInterval(req, res) {
-    if (!simInterval) res.json('no sim ongoing')
+    if (!simInterval) return res.json('no sim ongoing')
 
     if (simInterval) {
         clearInterval(simInterval);
@@ -38,6 +40,7 @@ async function startInterval(req, res) {
     await resetSimulationInternal();
 
     await insertScooters(req.params.amount);
+    await insertUsers(req.params.amount);
 
     simInterval = setInterval(updateInterval, 3000);
 
@@ -50,6 +53,8 @@ async function resetSimulationInternal() {
         db = await openDb();
         await db.query('DELETE FROM vteam.scooters WHERE scooter_id > 50;');
         await db.query('ALTER TABLE vteam.scooters AUTO_INCREMENT = 51;');
+        await db.query('DELETE FROM vteam.users WHERE user_id > 100;')
+        await db.query('ALTER TABLE vteam.users AUTO_INCREMENT = 20;')
     } catch (error) {
         console.log(error);
         throw error;
@@ -63,7 +68,7 @@ async function resetSimulation(req, res) {
         await resetSimulationInternal();
         res.json('sim reset');
     } catch (error) {
-        res.status(500).json('error');
+        res.status(500).json(error);
     }
 }
 
