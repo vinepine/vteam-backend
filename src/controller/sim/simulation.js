@@ -53,7 +53,7 @@ async function resetSimulationInternal() {
         db = await openDb();
         await db.query('DELETE FROM vteam.scooters WHERE scooter_id > 50;');
         await db.query('ALTER TABLE vteam.scooters AUTO_INCREMENT = 51;');
-        await db.query('DELETE FROM vteam.users WHERE user_id > 100;')
+        await db.query('DELETE FROM vteam.users WHERE user_id > 99;')
         await db.query('ALTER TABLE vteam.users AUTO_INCREMENT = 20;')
     } catch (error) {
         console.log(error);
