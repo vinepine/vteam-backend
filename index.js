@@ -14,8 +14,12 @@ const priceRoutes = require('./src/routes/price.js');
 const simRoutes = require('./src/routes/sim.js');
 
 
+
 const app = express();
-app.use(cors({ origin: "http://localhost:3000" }));
+app.use(cors({
+	origin: "http://localhost:3000",
+	credentials: true
+}));
 
 const server = http.createServer(app);
 
@@ -24,7 +28,6 @@ initSocket(server);
 const port = process.env.PORT || 3001;
 
 
-app.use(cors());
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 

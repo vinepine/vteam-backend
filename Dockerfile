@@ -8,10 +8,10 @@ COPY package*.json .
 
 COPY db.json .
 
+
 COPY src/ ./src
+COPY socket/ ./socket
 
 COPY .env .
-
-npm install socket.io
 
 RUN npm install
