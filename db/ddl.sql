@@ -18,9 +18,11 @@ CREATE TABLE IF NOT EXISTS users (
 );
 
 CREATE TABLE IF NOT EXISTS city (
-    city_id INT AUTO_INCREMENT PRIMARY KEY,
+    city_id INT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
-    zone TEXT
+    lat DECIMAL(8,4) NOT NULL,
+    lon DECIMAL(8,4) NOT NULL,
+    radius INT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS stations (
