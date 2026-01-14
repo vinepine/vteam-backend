@@ -17,7 +17,7 @@ const simRoutes = require('./src/routes/sim.js');
 
 const app = express();
 app.use(cors({
-	origin: "http://localhost:3000",
+	origin: ["http://localhost:3000", "http://localhost:3002"],
 	credentials: true
 }));
 
