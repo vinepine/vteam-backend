@@ -21,6 +21,22 @@ async function updateInterval() {
     }
 }
 
+async function updateBattery() {
+    let db;
+    try {
+        db = await openDb();
+        await db.query(`
+            UPDATE vteam.scooters
+            SET battery = battery - 1;`
+        );
+        console.log("battery updated..")
+    } catch (error) {
+        res.json(error)
+    } finally {
+        if (db) db.release();
+    }
+}
+
 async function stopInterval(req, res) {
     if (!simInterval) res.json('no sim ongoing')
 
@@ -40,6 +56,7 @@ async function startInterval(req, res) {
     await insertScooters(req.params.amount);
 
     simInterval = setInterval(updateInterval, 3000);
+    batteryInterval = setInterval(updateBattery, 61000);
 
     res.json('sim started');
 }
