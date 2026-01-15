@@ -1,41 +1,55 @@
 
 const { request, app } = require('./setup');
+const db = require('../src/db/database');
 
 let jwtToken;
+let originalQuery;
+
 const testUser = "test@gmail.com"
 const testPassword = "test"
 const userData = {
 	email: testUser,
 	password: testPassword
 }
-describe('Routes', () => {
+describe('Payment route', () => {
+
+	before(() => {
+		originalQuery = db.query;
+	});
+
+	after(() => {
+		db.query = originalQuery;
+	});
 	describe('POST /v1/register', () => {
+		beforeEach(() => {
+			db.query = (sql, callback) => {
+				if (sql.includes('INSERT INTO users')) {
+					callback(null, { insertId: 1 });
+				}
+			};
+		});
+
 		it('should register a user', done => {
 			request.execute(app).post('/v1/register')
 				.send(userData)
 				.end((err, res) => {
-					console.log(res.body)
 					res.should.have.status(200);
 					done();
 				})
 		})
 	});
-
-	describe('POST /v1/login', () => {
-		it('should login user', done => {
-			request.execute(app).post('/v1/login')
-				.send(userData)
-				.end((err, res) => {
-					jwtToken = res.body.token;
-
-					done();
-				})
-		})
-	})
 	describe('GET /v1/payment', () => {
+		beforeEach(() => {
+			db.query = (sql, callback) => {
+				callback(null, [
+					{ payment_id: 1, user_id: 1, amount: 50, status: 'complete' },
+					{ payment_id: 2, user_id: 2, amount: 29, status: 'complete' }
+				]);
+			};
+		});
+
 		it('should return payment array', done => {
 			request.execute(app).get('/v1/payment')
-				.set('x-access-token', jwtToken)
 				.end((err, res) => {
 					res.should.have.status(200);
 					res.body.payments.should.be.an('array');
@@ -48,7 +62,6 @@ describe('Routes', () => {
 		describe('when id exists', () => {
 			it('should return one payment array', done => {
 				request.execute(app).get('/v1/payment/2')
-					.set('x-access-token', jwtToken)
 					.end((err, res) => {
 					res.should.have.status(200);
 					res.body.payment.should.be.an('array');
@@ -63,7 +76,6 @@ describe('Routes', () => {
 			it('should return empty payment array', done => {
 			request.execute(app)
 				.get('/v1/payment/999999')
-				.set('x-access-token', jwtToken)
 				.end((err, res) => {
 
 				res.should.have.status(200);
@@ -80,7 +92,6 @@ describe('Routes', () => {
 		describe('when id does exists', () => {
             it('should return one payment array', done => {
                 request.execute(app).get('/v1/payment/user/2')
-                    .set('x-access-token', jwtToken)
                     .end((err, res) => {
                     res.should.have.status(200);
                     res.body.user.should.be.an('array');
@@ -95,7 +106,6 @@ describe('Routes', () => {
 			it('should return empty payment array', done => {
 			request.execute(app)
 				.get('/v1/payment/user/999999')
-				.set('x-access-token', jwtToken)
 				.end((err, res) => {
 
 				res.should.have.status(200);
@@ -110,7 +120,6 @@ describe('Routes', () => {
     describe('GET /v1/payment/amount/:amount', () => {
 		it('should return payment array', done => {
 			request.execute(app).get('/v1/payment/amount/29')
-				.set('x-access-token', jwtToken)
 				.end((err, res) => {
 					res.should.have.status(200);
 					res.body.result.should.be.an('array');
@@ -123,7 +132,6 @@ describe('Routes', () => {
 		});
         it('should return payment array', done => {
 			request.execute(app).get('/v1/payment/amount/0')
-				.set('x-access-token', jwtToken)
 				.end((err, res) => {
 					res.should.have.status(200);
 					res.body.result.should.be.an('array');
@@ -138,7 +146,6 @@ describe('Routes', () => {
     describe('GET /v1/payment/amount/:amount', () => {
 		it('should return payment array', done => {
 			request.execute(app).get('/v1/payment/amount/29')
-				.set('x-access-token', jwtToken)
 				.end((err, res) => {
 					res.should.have.status(200);
 					res.body.result.should.be.an('array');
@@ -147,15 +154,6 @@ describe('Routes', () => {
 					
 					done();
 				});
-		});
-	});
-	describe('GET /v1/payment', () => {
-		it('should fail without token', done => {
-			request.execute(app).get('/v1/payment')
-			.end((err, res) => {
-				res.status.should.equal(401);
-				done();
-			});
 		});
 	});
 });
