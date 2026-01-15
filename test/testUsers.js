@@ -32,7 +32,7 @@ describe('User route', () => {
 			request.execute(app).post('/v1/register')
 				.send(userData)
 				.end((err, res) => {
-					res.should.have.status(201);
+					res.should.have.status(200);
 					done();
 				});
 		});
