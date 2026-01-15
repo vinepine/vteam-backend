@@ -5,12 +5,13 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+
 jobs:
   test-api:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./
+        working-directory: ./vteam-backend
     steps:
       - uses: actions/checkout@v4
       - name: Start MariaDB container
@@ -24,12 +25,20 @@ jobs:
             -v $GITHUB_WORKSPACE/vteam-backend/db:/docker-entrypoint-initdb.d \
             -p 3306:3306 \
             mariadb:10.6
+
+      - name: Wait for MariaDB
+        run: |
+          echo "Waiting for MariaDB to be ready..."
+          for i in {1..30}; do
+            docker exec mariadb-test mysqladmin ping -uroot -p123 && break
+            sleep 2
+          done
       - name: Install dependencies
         run: npm ci
       - name: Run tests
         run: npm test -- --watchAll=false
         env:
-          DB_HOST: 127.0.0.1
+          DB_HOST: mariadb-test
           DB_USER: vteam01
           DB_PASSWORD: 123
           DB_NAME: vteam
