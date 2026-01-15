@@ -9,6 +9,9 @@ on:
 jobs:
   test-api:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./vteam-backend
     steps:
       - uses: actions/checkout@v4
       - name: Install dependencies
