@@ -27,12 +27,16 @@ jobs:
             mariadb:10.6
 
       - name: Wait for MariaDB
-        run: |
+        run: 
           echo "Waiting for MariaDB to be ready..."
           for i in {1..30}; do
             docker exec mariadb-test mysqladmin ping -uroot -p123 && break
             sleep 2
           done
+      - name: Run init SQL
+        run: 
+          docker exec -i mariadb-test mysql -uvteam01 -pvteam vteam < $GITHUB_WORKSPACE/vteam-backend/db/init.sql
+          docker exec -i mariadb-test mysql -uvteam01 -pvteam vteam < $GITHUB_WORKSPACE/vteam-backend/db/insert.sql
       - name: Install dependencies
         run: npm ci
       - name: Run tests
