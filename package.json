@@ -7,7 +7,7 @@
     "test": "NODE_ENV=test mocha --exit --timeout 10000",
     "dev": "nodemon index.js",
     "json-server": "npx json-server db.json -p 1337",
-    "lint": "eslint --ext .js --ignore-pattern node_modules/ --ignore-pattern db/ --ignore-pattern eslint.config.mjs ."
+    "lint": "eslint --ext .js --ignore-pattern node_modules/ --ignore-pattern db/ --ignore-pattern eslint.config.mjs --ignore-pattern test/ ."
   },
   "repository": {
     "type": "git",

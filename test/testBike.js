@@ -1,19 +1,18 @@
 
-const { request, app } = require('./setup');
+const {request, app} = require('./setup');
 const db = require('../src/db/database');
 
 let jwtToken;
 let originalQuery;
 
-const testUser = "test@gmail.com"
-const testPassword = "test"
+const testUser = 'test@gmail.com';
+const testPassword = 'test';
 const userData = {
 	email: testUser,
-	password: testPassword
-}
+	password: testPassword,
+};
 
 describe('Bike route', () => {
-	
 	before(() => {
 		originalQuery = db.query;
 	});
@@ -26,7 +25,7 @@ describe('Bike route', () => {
 		beforeEach(() => {
 			db.query = (sql, callback) => {
 				if (sql.includes('INSERT INTO users')) {
-					callback(null, { insertId: 1 });
+					callback(null, {insertId: 1});
 				}
 			};
 		});
@@ -37,15 +36,17 @@ describe('Bike route', () => {
 				.end((err, res) => {
 					res.should.have.status(200);
 					done();
-				})
-		})
+				});
+		});
 	});
 
 	describe('GET /v1/bike', () => {
 		beforeEach(() => {
 			db.query = (sql, callback) => {
 				callback(null, [
-					{ scooter_id: 1, city_id: 1, available: 1, battery: 100, lat: 59.3293, lon: 18.0686 }
+					{
+						scooter_id: 1, city_id: 1, available: 1, battery: 100, lat: 59.3293, lon: 18.0686,
+					},
 				]);
 			};
 		});
@@ -66,7 +67,9 @@ describe('Bike route', () => {
 			beforeEach(() => {
 				db.query = (sql, callback) => {
 					callback(null, [
-						{ scooter_id: 1, city_id: 1, available: 1, battery: 100, lat: 59.3293, lon: 18.0686 }
+						{
+							scooter_id: 1, city_id: 1, available: 1, battery: 100, lat: 59.3293, lon: 18.0686,
+						},
 					]);
 				};
 			});
@@ -107,8 +110,12 @@ describe('Bike route', () => {
 		beforeEach(() => {
 			db.query = (sql, callback) => {
 				callback(null, [
-					{ scooter_id: 1, city_id: 1, available: 1, battery: 100, lat: 59.3293, lon: 18.0686 },
-					{ scooter_id: 2, city_id: 1, available: 1, battery: 85, lat: 59.3293, lon: 18.0686 }
+					{
+						scooter_id: 1, city_id: 1, available: 1, battery: 100, lat: 59.3293, lon: 18.0686,
+					},
+					{
+						scooter_id: 2, city_id: 1, available: 1, battery: 85, lat: 59.3293, lon: 18.0686,
+					},
 				]);
 			};
 		});
@@ -122,7 +129,7 @@ describe('Bike route', () => {
 						bike.available.should.equal(1);
 					});
 					done();
-			});
+				});
 		});
 	});
 });

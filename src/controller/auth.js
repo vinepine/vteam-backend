@@ -14,7 +14,7 @@ async function register(req, res) {
 		db = await openDb();
 		await db.query('INSERT INTO vteam.users (email, hashed_password) VALUES (?, ?)', [email, hash]);
 
-		res.status(201).json('user created');
+		res.status(200).json('user created');
 	} catch (error) {
 		res.json(error);
 	} finally {

@@ -1,18 +1,17 @@
 
-const { request, app } = require('./setup');
+const {request, app} = require('./setup');
 const db = require('../src/db/database');
 
 let jwtToken;
 let originalQuery;
 
-const testUser = "test@gmail.com"
-const testPassword = "test"
+const testUser = 'test@gmail.com';
+const testPassword = 'test';
 const userData = {
 	email: testUser,
-	password: testPassword
-}
+	password: testPassword,
+};
 describe('Station route', () => {
-
 	before(() => {
 		originalQuery = db.query;
 	});
@@ -24,7 +23,7 @@ describe('Station route', () => {
 		beforeEach(() => {
 			db.query = (sql, callback) => {
 				if (sql.includes('INSERT INTO users')) {
-					callback(null, { insertId: 1 });
+					callback(null, {insertId: 1});
 				}
 			};
 		});
@@ -35,15 +34,19 @@ describe('Station route', () => {
 				.end((err, res) => {
 					res.should.have.status(200);
 					done();
-				})
-		})
+				});
+		});
 	});
 	describe('GET /v1/stations', () => {
 		beforeEach(() => {
 			db.query = (sql, callback) => {
 				callback(null, [
-					{ id: 1, city_id: 1, station_name: 'Station 1', capacity: 10 },
-					{ id: 4, city_id: 1, station_name: 'Station 4', capacity: 15 }
+					{
+						id: 1, city_id: 1, station_name: 'Station 1', capacity: 10,
+					},
+					{
+						id: 4, city_id: 1, station_name: 'Station 4', capacity: 15,
+					},
 				]);
 			};
 		});
@@ -53,7 +56,7 @@ describe('Station route', () => {
 				.end((err, res) => {
 					res.should.have.status(200);
 					res.body.stations.should.be.an('array');
-					
+
 					done();
 				});
 		});
@@ -63,7 +66,9 @@ describe('Station route', () => {
 			beforeEach(() => {
 				db.query = (sql, callback) => {
 					callback(null, [
-						{ id: 4, city_id: 1, station_name: 'Station 4', capacity: 15 }
+						{
+							id: 4, city_id: 1, station_name: 'Station 4', capacity: 15,
+						},
 					]);
 				};
 			});
@@ -71,10 +76,10 @@ describe('Station route', () => {
 			it('should return one station array', done => {
 				request.execute(app).get('/v1/stations/4')
 					.end((err, res) => {
-					res.should.have.status(200);
-					res.body.station.should.be.an('array');
-					res.body.station.length.should.equal(1);
-					res.body.station[0].id.should.equal(4);
+						res.should.have.status(200);
+						res.body.station.should.be.an('array');
+						res.body.station.length.should.equal(1);
+						res.body.station[0].id.should.equal(4);
 
 						done();
 					});
@@ -91,13 +96,12 @@ describe('Station route', () => {
 				request.execute(app)
 					.get('/v1/stations/999999')
 					.end((err, res) => {
+						res.should.have.status(200);
+						res.body.station.should.be.an('array');
+						res.body.station.length.should.equal(0);
 
-					res.should.have.status(200);
-					res.body.station.should.be.an('array');
-					res.body.station.length.should.equal(0);
-
-					done();
-				});
+						done();
+					});
 			});
 		});
 	});

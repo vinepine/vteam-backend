@@ -1,5 +1,5 @@
 
-const { request, app } = require('./setup');
+const {request, app} = require('./setup');
 const db = require('../src/db/database');
 
 let jwtToken;
@@ -12,7 +12,6 @@ const userData = {
 	password: testPassword,
 };
 describe('City route', () => {
-
 	before(() => {
 		originalQuery = db.query;
 	});
@@ -24,7 +23,7 @@ describe('City route', () => {
 		beforeEach(() => {
 			db.query = (sql, callback) => {
 				if (sql.includes('INSERT INTO users')) {
-					callback(null, { insertId: 1 });
+					callback(null, {insertId: 1});
 				}
 			};
 		});
@@ -42,8 +41,8 @@ describe('City route', () => {
 		beforeEach(() => {
 			db.query = (sql, callback) => {
 				callback(null, [
-					{ city_id: 1, city_name: 'Malmö' },
-					{ city_id: 2, city_name: 'Stockholm' }
+					{city_id: 1, city_name: 'Malmö'},
+					{city_id: 2, city_name: 'Stockholm'},
 				]);
 			};
 		});
@@ -64,7 +63,7 @@ describe('City route', () => {
 			beforeEach(() => {
 				db.query = (sql, callback) => {
 					callback(null, [
-						{ city_id: 1, city_name: 'Malmö' }
+						{city_id: 1, city_name: 'Malmö'},
 					]);
 				};
 			});
@@ -104,7 +103,9 @@ describe('City route', () => {
 		beforeEach(() => {
 			db.query = (sql, callback) => {
 				callback(null, [
-					{ city_id: 1, city_name: 'Malmö', scooter_id: 1, battery: 100 }
+					{
+						city_id: 1, city_name: 'Malmö', scooter_id: 1, battery: 100,
+					},
 				]);
 			};
 		});
