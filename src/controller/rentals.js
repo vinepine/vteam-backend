@@ -1,6 +1,6 @@
 const openDb = require('../db/database.js');
 
-// kanske kan tas bort?
+// Kanske kan tas bort?
 async function getRental(req, res) {
 	let db;
 
@@ -15,7 +15,7 @@ async function getRental(req, res) {
 	}
 }
 
-// om gjord för att hämta hyror för specifikt inloggade använderen. 
+// Om gjord för att hämta hyror för specifikt inloggade använderen.
 async function getMyRentals(req, res) {
 	const {user_id: userId} = req.user || {};
 	if (!userId) return res.status(401).json({message: 'Missing user in token'});
@@ -49,9 +49,9 @@ async function getOneRental(req, res) {
 	}
 }
 
-// omgjord för att sätta "krav" inför en hyrning, med saldo kontroll. samt const start omgjord för att hämta aktuell tid. id bytt till user_id och scooter_id för att passa in i db.
+// Omgjord för att sätta "krav" inför en hyrning, med saldo kontroll. samt const start omgjord för att hämta aktuell tid. id bytt till user_id och scooter_id för att passa in i db.
 async function startRental(req, res) {
-	const {id, userId, scooterId} = req.params;
+	const {userId, scooterId} = req.params;
 	const start = new Date().toISOString().slice(0, 19).replace('T', ' ');
 	const db = await openDb();
 	try {
@@ -60,21 +60,21 @@ async function startRental(req, res) {
 		if (!userResult || userResult.length === 0) {
 			return res.status(404).json({error: 'Användare hittades inte'});
 		}
-		
+
 		const balance = userResult[0].balance || 0;
 		const minBalance = 10; // Minsta saldo för att starta hyra
-		
+
 		if (balance < minBalance) {
 			return res.status(400).json({
 				error: 'Otillräckligt saldo',
-				message: `Du behöver minst ${minBalance} kr för att hyra en cykel. Ditt saldo: ${balance.toFixed(2)} kr`
+				message: `Du behöver minst ${minBalance} kr för att hyra en cykel. Ditt saldo: ${balance.toFixed(2)} kr`,
 			});
 		}
 
 		// Markera cykeln som upptagen
 		await db.query(
 			'UPDATE vteam.scooters SET available = FALSE, rented = TRUE WHERE scooter_id = ?',
-			[scooterId]
+			[scooterId],
 		);
 
 		const result = await db.query(
@@ -99,61 +99,61 @@ async function endRental(req, res) {
 		// Hämta hyran
 		const rentalResult = await db.query(
 			'SELECT * FROM vteam.rentals WHERE rental_id = ? AND user_id = ?',
-			[id, userId]
+			[id, userId],
 		);
-		
+
 		if (!rentalResult || rentalResult.length === 0) {
 			return res.status(404).json({error: 'Hyra hittades inte'});
 		}
-		
+
 		const rental = rentalResult[0];
-		
+
 		// Beräkna kostnad (pris per minut)
 		const priceResult = await db.query('SELECT ppm FROM vteam.price WHERE id = 1');
 		const pricePerMinute = (priceResult && priceResult[0]) ? priceResult[0].ppm : 2.5;
-		
+
 		console.log(`Pris per minut: ${pricePerMinute} kr`);
-		
+
 		const startTime = new Date(rental.start_time);
 		const endTime = new Date(end);
 		const minutes = Math.ceil((endTime - startTime) / 1000 / 60);
 		const cost = Math.max(minutes * pricePerMinute, 5); // Minst 5 kr
-		
+
 		console.log(`Hyrtid: ${minutes} minuter, Kostnad: ${cost.toFixed(2)} kr`);
-		
+
 		// Hämta nuvarande saldo/ blir skuld vid negativt saldo.
 		const userResult = await db.query('SELECT balance FROM vteam.users WHERE user_id = ?', [userId]);
 		const currentBalance = (userResult && userResult[0]) ? userResult[0].balance : 0;
-		
+
 		// Uppdatera hyran
 		await db.query(
 			'UPDATE vteam.rentals SET end_time = ? WHERE rental_id = ?',
-			[end, id]
+			[end, id],
 		);
-		
+
 		// Markera cykeln som tillgänglig igen
 		await db.query(
 			'UPDATE vteam.scooters SET available = TRUE, rented = FALSE WHERE scooter_id = ?',
-			[scooterId]
+			[scooterId],
 		);
-		
+
 		// Dra pengar från saldo
 		await db.query(
 			'UPDATE vteam.users SET balance = balance - ? WHERE user_id = ?',
-			[cost, userId]
+			[cost, userId],
 		);
-		
+
 		// Skapa betalning
 		await db.query(
 			'INSERT INTO vteam.payments (rental_id, user_id, pay_method, amount, status) VALUES (?, ?, ?, ?, ?)',
-			[id, userId, 'balance', cost, 'completed']
+			[id, userId, 'balance', cost, 'completed'],
 		);
 
 		res.status(200).json({
-			success: true, 
+			success: true,
 			cost: cost.toFixed(2),
-			minutes: minutes,
-			newBalance: (currentBalance - cost).toFixed(2)
+			minutes,
+			newBalance: (currentBalance - cost).toFixed(2),
 		});
 	} catch (error) {
 		console.error('Error ending rental:', error);

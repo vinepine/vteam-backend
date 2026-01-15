@@ -30,35 +30,35 @@ async function specificUser(req, res) {
 }
 
 async function deleteUser(req, res) {
-	const id = parseInt(req.params.id);
-	const {user_id} = req.user
+	const id = parseInt(req.params.id, radix);
+	const {user_id} = req.user;
 	let db;
 
-	if ( user_id != id) return res.json('No permission')
+	if (user_id !== id) return res.json('No permission');
 
 	try {
 		db = await openDb();
 		await db.query('DELETE FROM vteam.users WHERE user_id = ?', [id]);
 
-		res.status(202).json('User deleted')
+		res.status(202).json('User deleted');
 	} catch (error) {
-		res.status(500).json(error)
+		res.status(500).json(error);
 	} finally {
 		if (db) db.release();
 	}
 }
 
 async function loadBalance(req, res) {
-	const amount = req.params.amount
+	const {amount} = req.params;
 	const {user_id} = req.user;
 	let db;
 
 	try {
 		db = await openDb();
 		await db.query('UPDATE vteam.users SET balance = balance + ? WHERE user_id = ?', [amount, user_id]);
-		res.json('balance updated')
+		res.json('balance updated');
 	} catch (error) {
-		res.status(500).json(error)
+		res.status(500).json(error);
 	} finally {
 		if (db) db.release();
 	}
@@ -68,5 +68,5 @@ module.exports = {
 	getUsers,
 	specificUser,
 	deleteUser,
-	loadBalance
+	loadBalance,
 };

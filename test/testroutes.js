@@ -10,23 +10,23 @@ chai.use(chaiHttp);
 chai.should();
 
 let jwtToken;
-const testUser = "test@gmail.com"
-const testPassword = "test"
+const testUser = 'test@gmail.com';
+const testPassword = 'test';
 const userData = {
 	email: testUser,
-	password: testPassword
-}
+	password: testPassword,
+};
 describe('Routes', () => {
 	describe('POST /v1/register', () => {
 		it('should register a user', done => {
 			request.execute(app).post('/v1/register')
 				.send(userData)
 				.end((err, res) => {
-					console.log(res.body)
+					console.log(res.body);
 					res.should.have.status(200);
 					done();
-				})
-		})
+				});
+		});
 	});
 
 	describe('POST /v1/login', () => {
@@ -37,9 +37,9 @@ describe('Routes', () => {
 					jwtToken = res.body.token;
 
 					done();
-				})
-		})
-	})
+				});
+		});
+	});
 	describe('GET /v1/city', () => {
 		it('should return cities array', done => {
 			request.execute(app).get('/v1/city')

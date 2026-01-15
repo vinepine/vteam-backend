@@ -1,7 +1,7 @@
-const express = require("express");
-const cors = require("cors");
-const http = require("http");
-const { initSocket } = require("./socket/socket");
+const express = require('express');
+const cors = require('cors');
+const http = require('http');
+const {initSocket} = require('./socket/socket');
 
 const scooterRoutes = require('./src/routes/scooters.js');
 const stationRoutes = require('./src/routes/stations.js');
@@ -13,12 +13,10 @@ const cityRoutes = require('./src/routes/city.js');
 const priceRoutes = require('./src/routes/price.js');
 const simRoutes = require('./src/routes/sim.js');
 
-
-
 const app = express();
 app.use(cors({
-	origin: ["http://localhost:3000", "http://localhost:3002"],
-	credentials: true
+	origin: ['http://localhost:3000', 'http://localhost:3002'],
+	credentials: true,
 }));
 
 const server = http.createServer(app);
@@ -26,7 +24,6 @@ const server = http.createServer(app);
 initSocket(server);
 
 const port = process.env.PORT || 3001;
-
 
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
