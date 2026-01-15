@@ -22,7 +22,7 @@ jobs:
             -e MYSQL_DATABASE=vteam \
             -e MYSQL_USER=vteam01 \
             -e MYSQL_PASSWORD=vteam \
-            -v $GITHUB_WORKSPACE/vteam-backend/db:/docker-entrypoint-initdb.d \
+            -v $GITHUB_WORKSPACE/db:/docker-entrypoint-initdb.d \
             -p 3306:3306 \
             mariadb:10.6
 
@@ -35,8 +35,8 @@ jobs:
           done
       - name: Run init SQL
         run: |
-          docker exec -i mariadb-test mysql -uvteam01 -pvteam vteam < $GITHUB_WORKSPACE/vteam-backend/db/init.sql
-          docker exec -i mariadb-test mysql -uvteam01 -pvteam vteam < $GITHUB_WORKSPACE/vteam-backend/db/insert.sql
+          docker exec -i mariadb-test mysql -uvteam01 -pvteam vteam < $GITHUB_WORKSPACE/db/init.sql
+          docker exec -i mariadb-test mysql -uvteam01 -pvteam vteam < $GITHUB_WORKSPACE/db/insert.sql
       - name: Install dependencies
         run: npm ci
       - name: Run tests
