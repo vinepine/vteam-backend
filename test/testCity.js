@@ -1,13 +1,5 @@
 
-const chai = require('chai');
-
-const chaiHttp = require('chai-http').default;
-const {request} = require('chai-http');
-
-const app = require('../index.js');
-
-chai.use(chaiHttp);
-chai.should();
+const { request, app } = require('./setup');
 
 let jwtToken;
 const testUser = 'test@gmail.com';
@@ -54,15 +46,31 @@ describe('Routes', () => {
 	});
 
 	describe('GET /v1/city/:id', () => {
-		it('should return one city array', done => {
-			request.execute(app).get('/v1/city/1')
-				.set('x-access-token', jwtToken)
-				.end((err, res) => {
-					res.should.have.status(200);
-					res.body.city.length.should.equal(1);
+		describe('when id exists', () => {
+			it('should return one city array', done => {
+				request.execute(app).get('/v1/city/1')
+					.set('x-access-token', jwtToken)
+					.end((err, res) => {
+						res.should.have.status(200);
+						res.body.city.length.should.equal(1);
+						res.body.city[0].city_id.should.equal(1);
 
-					done();
-				});
+						done();
+					});
+			});
+		});
+		describe('when id does not exists', () => {
+			it('should return one city array', done => {
+				request.execute(app).get('/v1/city/99')
+					.set('x-access-token', jwtToken)
+					.end((err, res) => {
+						res.should.have.status(200);
+						res.body.city.should.be.an('array');
+						res.body.city.length.should.equal(0);
+
+						done();
+					});
+			});
 		});
 	});
 
@@ -72,10 +80,21 @@ describe('Routes', () => {
 				.set('x-access-token', jwtToken)
 				.end((err, res) => {
 					res.should.have.status(200);
+					res.body.result.should.be.an('array');
 					res.body.result[0].city_name.should.equal('Malmö');
 
 					done();
 				});
+		});
+	});
+	describe('GET /v1/city/', () => {
+		it('should fail without token', done => {
+			request.execute(app).get('/v1/city')
+			.end((err, res) => {
+				res.should.exist;
+				res.status.should.equal(401);
+				done();
+			});
 		});
 	});
 });
