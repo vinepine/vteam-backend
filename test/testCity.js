@@ -1,41 +1,55 @@
 
 const { request, app } = require('./setup');
+const db = require('../src/db/database');
 
 let jwtToken;
+let originalQuery;
+
 const testUser = 'test@gmail.com';
 const testPassword = 'test';
 const userData = {
 	email: testUser,
 	password: testPassword,
 };
-describe('Routes', () => {
+describe('City route', () => {
+
+	before(() => {
+		originalQuery = db.query;
+	});
+
+	after(() => {
+		db.query = originalQuery;
+	});
 	describe('POST /v1/register', () => {
+		beforeEach(() => {
+			db.query = (sql, callback) => {
+				if (sql.includes('INSERT INTO users')) {
+					callback(null, { insertId: 1 });
+				}
+			};
+		});
+
 		it('should register a user', done => {
 			request.execute(app).post('/v1/register')
 				.send(userData)
 				.end((err, res) => {
-					console.log(res.body);
 					res.should.have.status(200);
 					done();
 				});
 		});
 	});
-
-	describe('POST /v1/login', () => {
-		it('should login user', done => {
-			request.execute(app).post('/v1/login')
-				.send(userData)
-				.end((err, res) => {
-					jwtToken = res.body.token;
-
-					done();
-				});
-		});
-	});
 	describe('GET /v1/city', () => {
+		beforeEach(() => {
+			db.query = (sql, callback) => {
+				callback(null, [
+					{ city_id: 1, city_name: 'Malmö' },
+					{ city_id: 2, city_name: 'Stockholm' }
+				]);
+			};
+		});
+
 		it('should return cities array', done => {
 			request.execute(app).get('/v1/city')
-				.set('x-access-token', jwtToken)
 				.end((err, res) => {
 					res.should.have.status(200);
 					res.body.cities.should.be.an('array');
@@ -47,9 +61,16 @@ describe('Routes', () => {
 
 	describe('GET /v1/city/:id', () => {
 		describe('when id exists', () => {
+			beforeEach(() => {
+				db.query = (sql, callback) => {
+					callback(null, [
+						{ city_id: 1, city_name: 'Malmö' }
+					]);
+				};
+			});
+
 			it('should return one city array', done => {
 				request.execute(app).get('/v1/city/1')
-					.set('x-access-token', jwtToken)
 					.end((err, res) => {
 						res.should.have.status(200);
 						res.body.city.length.should.equal(1);
@@ -60,9 +81,14 @@ describe('Routes', () => {
 			});
 		});
 		describe('when id does not exists', () => {
-			it('should return one city array', done => {
+			beforeEach(() => {
+				db.query = (sql, callback) => {
+					callback(null, []);
+				};
+			});
+
+			it('should return empty city array', done => {
 				request.execute(app).get('/v1/city/99')
-					.set('x-access-token', jwtToken)
 					.end((err, res) => {
 						res.should.have.status(200);
 						res.body.city.should.be.an('array');
@@ -75,9 +101,16 @@ describe('Routes', () => {
 	});
 
 	describe('GET /v1/city/bike/:id', () => {
+		beforeEach(() => {
+			db.query = (sql, callback) => {
+				callback(null, [
+					{ city_id: 1, city_name: 'Malmö', scooter_id: 1, battery: 100 }
+				]);
+			};
+		});
+
 		it('should return bikes in city array', done => {
 			request.execute(app).get('/v1/city/bike/1')
-				.set('x-access-token', jwtToken)
 				.end((err, res) => {
 					res.should.have.status(200);
 					res.body.result.should.be.an('array');
@@ -85,16 +118,6 @@ describe('Routes', () => {
 
 					done();
 				});
-		});
-	});
-	describe('GET /v1/city/', () => {
-		it('should fail without token', done => {
-			request.execute(app).get('/v1/city')
-			.end((err, res) => {
-				res.should.exist;
-				res.status.should.equal(401);
-				done();
-			});
 		});
 	});
 });

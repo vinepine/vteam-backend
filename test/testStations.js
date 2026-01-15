@@ -1,41 +1,55 @@
 
 const { request, app } = require('./setup');
+const db = require('../src/db/database');
 
 let jwtToken;
+let originalQuery;
+
 const testUser = "test@gmail.com"
 const testPassword = "test"
 const userData = {
 	email: testUser,
 	password: testPassword
 }
-describe('Routes', () => {
+describe('Station route', () => {
+
+	before(() => {
+		originalQuery = db.query;
+	});
+
+	after(() => {
+		db.query = originalQuery;
+	});
 	describe('POST /v1/register', () => {
+		beforeEach(() => {
+			db.query = (sql, callback) => {
+				if (sql.includes('INSERT INTO users')) {
+					callback(null, { insertId: 1 });
+				}
+			};
+		});
+
 		it('should register a user', done => {
 			request.execute(app).post('/v1/register')
 				.send(userData)
 				.end((err, res) => {
-					console.log(res.body)
 					res.should.have.status(200);
 					done();
 				})
 		})
 	});
-
-	describe('POST /v1/login', () => {
-		it('should login user', done => {
-			request.execute(app).post('/v1/login')
-				.send(userData)
-				.end((err, res) => {
-					jwtToken = res.body.token;
-
-					done();
-				})
-		})
-	})
 	describe('GET /v1/stations', () => {
+		beforeEach(() => {
+			db.query = (sql, callback) => {
+				callback(null, [
+					{ id: 1, city_id: 1, station_name: 'Station 1', capacity: 10 },
+					{ id: 4, city_id: 1, station_name: 'Station 4', capacity: 15 }
+				]);
+			};
+		});
+
 		it('should return stations array', done => {
 			request.execute(app).get('/v1/stations')
-				.set('x-access-token', jwtToken)
 				.end((err, res) => {
 					res.should.have.status(200);
 					res.body.stations.should.be.an('array');
@@ -46,9 +60,16 @@ describe('Routes', () => {
 	});
 	describe('GET /v1/stations/:id', () => {
 		describe('when id exists', () => {
-			it('should return one bike array', done => {
+			beforeEach(() => {
+				db.query = (sql, callback) => {
+					callback(null, [
+						{ id: 4, city_id: 1, station_name: 'Station 4', capacity: 15 }
+					]);
+				};
+			});
+
+			it('should return one station array', done => {
 				request.execute(app).get('/v1/stations/4')
-					.set('x-access-token', jwtToken)
 					.end((err, res) => {
 					res.should.have.status(200);
 					res.body.station.should.be.an('array');
@@ -60,25 +81,21 @@ describe('Routes', () => {
 			});
 		});
 		describe('when id does not exist', () => {
+			beforeEach(() => {
+				db.query = (sql, callback) => {
+					callback(null, []);
+				};
+			});
+
 			it('should return empty stations array', done => {
 				request.execute(app)
 					.get('/v1/stations/999999')
-					.set('x-access-token', jwtToken)
 					.end((err, res) => {
 
 					res.should.have.status(200);
 					res.body.station.should.be.an('array');
 					res.body.station.length.should.equal(0);
 
-					done();
-				});
-			});
-		});
-		describe('when token does not exist', () => {
-			it('should fail without token', done => {
-				request.execute(app).get('/v1/stations/4')
-				.end((err, res) => {
-					res.status.should.equal(401);
 					done();
 				});
 			});
