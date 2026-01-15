@@ -5,16 +5,31 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
-
 jobs:
   test-api:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./
+        working-directory: ./vteam-backend
     steps:
       - uses: actions/checkout@v4
+      - name: Start MariaDB container
+        run: |
+          docker run -d \
+            --name mariadb-test \
+            -e MYSQL_ROOT_PASSWORD=123 \
+            -e MYSQL_DATABASE=vteam \
+            -e MYSQL_USER=vteam01 \
+            -e MYSQL_PASSWORD=vteam \
+            -v $GITHUB_WORKSPACE/vteam-backend/db:/docker-entrypoint-initdb.d \
+            -p 3306:3306 \
+            mariadb:10.6
       - name: Install dependencies
         run: npm ci
       - name: Run tests
         run: npm test -- --watchAll=false
+        env:
+          DB_HOST: 127.0.0.1
+          DB_USER: vteam01
+          DB_PASSWORD: 123
+          DB_NAME: vteam
