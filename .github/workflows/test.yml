@@ -40,5 +40,5 @@ jobs:
         env:
           DB_HOST: mariadb-test
           DB_USER: vteam01
-          DB_PASSWORD: 123
+          DB_PASSWORD: vteam
           DB_NAME: vteam
