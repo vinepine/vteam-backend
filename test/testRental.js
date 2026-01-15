@@ -1,18 +1,17 @@
 
-const { request, app } = require('./setup');
+const {request, app} = require('./setup');
 const db = require('../src/db/database');
 
 let jwtToken;
 let originalQuery;
 
-const testUser = "test@gmail.com"
-const testPassword = "test"
+const testUser = 'test@gmail.com';
+const testPassword = 'test';
 const userData = {
 	email: testUser,
-	password: testPassword
-}
+	password: testPassword,
+};
 describe('Rental route', () => {
-
 	before(() => {
 		originalQuery = db.query;
 	});
@@ -24,7 +23,7 @@ describe('Rental route', () => {
 		beforeEach(() => {
 			db.query = (sql, callback) => {
 				if (sql.includes('INSERT INTO users')) {
-					callback(null, { insertId: 1 });
+					callback(null, {insertId: 1});
 				}
 			};
 		});
@@ -35,15 +34,19 @@ describe('Rental route', () => {
 				.end((err, res) => {
 					res.should.have.status(200);
 					done();
-				})
-		})
+				});
+		});
 	});
 	describe('GET /v1/rental', () => {
 		beforeEach(() => {
 			db.query = (sql, callback) => {
 				callback(null, [
-					{ rental_id: 1, user_id: 1, scooter_id: 1, start_time: '2024-01-01' },
-					{ rental_id: 2, user_id: 2, scooter_id: 2, start_time: '2024-01-02' }
+					{
+						rental_id: 1, user_id: 1, scooter_id: 1, start_time: '2024-01-01',
+					},
+					{
+						rental_id: 2, user_id: 2, scooter_id: 2, start_time: '2024-01-02',
+					},
 				]);
 			};
 		});
@@ -64,7 +67,9 @@ describe('Rental route', () => {
 			beforeEach(() => {
 				db.query = (sql, callback) => {
 					callback(null, [
-						{ rental_id: 1, user_id: 1, scooter_id: 1, start_time: '2024-01-01' }
+						{
+							rental_id: 1, user_id: 1, scooter_id: 1, start_time: '2024-01-01',
+						},
 					]);
 				};
 			});
