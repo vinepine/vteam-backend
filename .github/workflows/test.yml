@@ -22,21 +22,21 @@ jobs:
             -e MYSQL_DATABASE=vteam \
             -e MYSQL_USER=vteam01 \
             -e MYSQL_PASSWORD=vteam \
-            -v $GITHUB_WORKSPACE/vteam-backend/db:/docker-entrypoint-initdb.d \
+            -v $GITHUB_WORKSPACE/db:/docker-entrypoint-initdb.d \
             -p 3306:3306 \
             mariadb:10.6
 
       - name: Wait for MariaDB
-        run: 
+        run: |
           echo "Waiting for MariaDB to be ready..."
           for i in {1..30}; do
             docker exec mariadb-test mysqladmin ping -uroot -p123 && break
             sleep 2
           done
       - name: Run init SQL
-        run: 
-          docker exec -i mariadb-test mysql -uvteam01 -pvteam vteam < $GITHUB_WORKSPACE/vteam-backend/db/init.sql
-          docker exec -i mariadb-test mysql -uvteam01 -pvteam vteam < $GITHUB_WORKSPACE/vteam-backend/db/insert.sql
+        run: |
+          docker exec -i mariadb-test mysql -uvteam01 -pvteam vteam < $GITHUB_WORKSPACE/db/init.sql
+          docker exec -i mariadb-test mysql -uvteam01 -pvteam vteam < $GITHUB_WORKSPACE/db/insert.sql
       - name: Install dependencies
         run: npm ci
       - name: Run tests
@@ -46,3 +46,4 @@ jobs:
           DB_USER: vteam01
           DB_PASSWORD: vteam
           DB_NAME: vteam
+
