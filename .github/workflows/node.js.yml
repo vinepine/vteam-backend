@@ -33,6 +33,6 @@ jobs:
       - name: Install dependencies
         run: npm install
       - name: Insert database data
-        run: mariadb -h 127.0.0.1 -P 3306 -u vteam01 -pvteam vteam < db/init.sql
+        run: mysql -h 127.0.0.1 -P 3306 -u vteam01 -pvteam vteam < db/init.sql
       - name: Run tests
         run: npm test -- --watchAll=false
