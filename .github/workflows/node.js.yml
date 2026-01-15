@@ -36,3 +36,5 @@ jobs:
         run: mysql --local-infile=1 -h 127.0.0.1 -P 3306 -u vteam01 -pvteam vteam < db/init.sql
       - name: Run tests
         run: npm test -- --watchAll=false
+      - name: linter
+        run: npm run lint
