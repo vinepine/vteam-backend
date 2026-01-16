@@ -1,6 +1,6 @@
 # vteam-backend
 ![scooter](public/img/scooter.png)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/vinepine/vteam-backend/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/vinepine/vteam-backend/?branch=main)
+
 Git repo för Vteam backend
 
 1. **Klona repot**
@@ -14,3 +14,4 @@ Git repo för Vteam backend
 3. **Starta server**
     ```bash
     npm run dev
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/vinepine/vteam-backend/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/vinepine/vteam-backend/?branch=main)
