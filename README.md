@@ -15,4 +15,4 @@ Git repo för Vteam backend
     ```bash
     npm run dev
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/vinepine/vteam-backend/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/vinepine/vteam-backend/?branch=main)
-[![Build Status](htdtps://scrutinizer-ci.com/g/vinepine/vteam-backend/badges/build.png?b=main)](https://scrutinizer-ci.com/g/vinepine/vteam-backend/build-status/main)
+[![Build Status](https://scrutinizer-ci.com/g/vinepine/vteam-backend/badges/build.png?b=main)](https://scrutinizer-ci.com/g/vinepine/vteam-backend/build-status/main)
